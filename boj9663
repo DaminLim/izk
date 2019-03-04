@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <math.h>
+
+using namespace std;
+
+void solve(int n);
+void addPoint(int n, int i);
+void removePoint(int n, int i);
+
+int col[30] = { 0 }, asc[30] = { 0 }, desc[30] = { 0 };
+int N, c=0;
+
+void solve(int n) {
+	if (n == N) {
+		c++;
+		return;
+	}
+
+	for (int i = 0; i < N; i++) {
+		if (col[i] == 1 || asc[n + i] == 1 || desc[N + n - i] == 1) continue;
+		addPoint(n, i);
+		solve(n + 1);
+		removePoint(n, i);
+	}
+}
+
+void removePoint(int n, int i) {
+	col[i] = 0;
+	asc[n + i] = 0;
+	desc[N + n - i] = 0;
+}
+
+void addPoint(int n, int i) {
+	col[i] = 1;
+	asc[n + i] = 1;
+	desc[N + n - i] = 1;
+}
+
+int main() {
+	cin >> N;
+	solve(0);
+	cout << c;
+	return 0;
+}
+
+//  : https://blockdmask.tistory.com/181
