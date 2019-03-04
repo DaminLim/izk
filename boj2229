@@ -1,0 +1,46 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+#include <math.h>
+
+using namespace std;
+
+int solve(int n);
+void getDistance();
+
+int dp[1001] , point[1001], dis[1001][1001];
+int N;
+
+int solve(int n) {
+	if (n == N) return 0;
+	int &ret = dp[n];
+	if (ret != -1) return ret;
+	ret = 0;
+
+	for (int i = 0; i <= N - n; i++) {
+		ret = max(dis[n][n + i] + solve(n + i + 1), ret);
+	}
+	return ret;
+}
+
+void getDistance() {
+	for (int i = 1; i <= N; i++) {
+		for (int j = i; j <= N; j++) {
+			dis[i][j] = abs(point[i] - point[j]);
+		}
+	}
+}
+
+int main() { 
+	memset(dp, -1, sizeof(dp));
+	cin >> N;
+	for (int i = 1; i <= N; i++) {
+		cin >> point[i];
+	}
+	getDistance();
+
+	cout << solve(1);
+	
+	return 0;
+}
